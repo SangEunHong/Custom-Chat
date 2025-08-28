@@ -75,46 +75,89 @@
 ---
 
 ## 📁 프로젝트 구조
-
-> 실제 폴더명은 저장소 구성에 맞게 조정하세요. (예시는 루트에 프론트 `src/`와 파이썬 모듈 폴더가 공존하는 형태)
-
-```
-.
-├─ src/                              # React 프론트엔드
-│  ├─ components/
-│  │  ├─ Sidebar.jsx
-│  │  ├─ Footer.jsx
-│  │  └─ chat/
-│  │     ├─ ChatInput.jsx
-│  │     ├─ ChatMessageList.jsx
-│  │     └─ MessageBubble.jsx
-│  ├─ pages/
-│  │  ├─ MainPage.jsx, LoginPage.jsx, SignupPage.jsx
-│  │  ├─ MyPage.jsx, WritePage.jsx
-│  │  ├─ PostDetailPage.jsx, PostEditPage.jsx
-│  │  ├─ ChatPage.jsx
-│  │  └─ admin/AdminUsersPage.jsx
-│  ├─ App.js, Layout.jsx
-│  ├─ index.js, index.css
-│  └─ ...
+CHAT/
+├── backend/
+│   ├── __pycache__/
+│   ├── routers/
+│   │   ├── __pycache__/
+│   │   ├── __init__.py
+│   │   ├── admin_users.py
+│   │   ├── chat.py
+│   │   ├── comments.py
+│   │   ├── post.py
+│   │   └── user.py
+│   ├── venv/
+│   ├── auth.py
+│   ├── crud.py
+│   ├── database.py
+│   ├── main.py
+│   ├── models.py
+│   └── schemas.py
 │
-├─ crawler/
-│  └─ web_crawler.py                 # H1~H4/솔루션/비즈니스 크롤러
-├─ processor/
-│  ├─ cleaner.py                     # raw → clean (정제)
-│  └─ chunker.py                     # clean → chunks (문장·구조화)
-├─ embedder/
-│  └─ embed_faiss.py                 # 임베딩 + FAISS 인덱싱
-├─ rag/
-│  └─ search.py                      # 검색+MMR+의도 라우팅
-├─ utils/
-│  ├─ file_utils.py
-│  └─ text_utils.py
-├─ config.py
-├─ main.py                           # 파이프라인 일괄 실행
-├─ service.py                        # FastAPI RAG 서버(:9001)
-└─ requirements.txt (권장)
-```
+├── frontend/
+│   ├── node_modules/
+│   ├── public/
+│   └── src/
+│       ├── components/
+│       │   ├── chat/
+│       │   ├── Footer.jsx
+│       │   └── Sidebar.jsx
+│       ├── pages/
+│       │   ├── admin/
+│       │   │   └── AdminUsersPage.jsx
+│       │   ├── ChatPage.jsx
+│       │   ├── LoginPage.jsx
+│       │   ├── MainPage.jsx
+│       │   ├── MyPage.jsx
+│       │   ├── PostDetailPage.jsx
+│       │   ├── PostEditPage.jsx
+│       │   ├── SignupPage.jsx
+│       │   └── WritePage.jsx
+│       ├── App.js
+│       ├── index.css
+│       ├── index.js
+│       └── Layout.jsx
+│
+├── reportWebVitals.js
+├── setupTests.js
+├── .gitignore
+├── package-lock.json
+├── package.json
+├── postcss.config.js
+├── README.md
+├── tailwind.config.js
+└── .env
+CHATT/
+├─ .venv/                         # 가상환경
+├─ crawler/                       # 원문 수집
+│  ├─ __init__.py
+│  └─ web_crawler.py
+├─ data/                          # 전처리 단계 산출물
+│  ├─ raw.jsonl                   # 크롤링 원문
+│  ├─ clean.jsonl                 # 클린 텍스트
+│  └─ chunks.jsonl                # 청크 결과
+├─ processor/                     # 전처리 파이프라인
+│  ├─ __init__.py
+│  ├─ cleaner.py                  # 노이즈 제거/정규화
+│  └─ chunker.py                  # 문서 청크 분할
+├─ embedder/                      # 임베딩 생성
+│  ├─ __init__.py
+│  └─ embed_faiss.py              # FAISS용 벡터 생성/저장
+├─ index/                         # 검색 인덱스 및 메타
+│  ├─ faiss_ip.index              # FAISS InnerProduct 인덱스
+│  ├─ metas.jsonl                 # 청크 메타데이터
+│  └─ texts.jsonl                 # 청크 원문 저장
+├─ rag/                           # RAG 검색/조회
+│  ├─ __init__.py
+│  └─ search.py                   # 쿼리→검색→리트리브 로직
+├─ utils/                         # 공용 유틸
+│  ├─ __init__.py
+│  ├─ file_utils.py               # 파일 I/O
+│  └─ text_utils.py               # 텍스트 헬퍼
+├─ config.py                      # 경로/모델/파라미터 설정
+├─ main.py                        # 파이프라인 엔트리/배치 스크립트
+├─ service.py                     # API 서버 엔트리
+└─ requirements.txt               # 의존성 목록
 
 ---
 
@@ -132,20 +175,16 @@ npm install
 npm start            # http://localhost:3000
 ```
 
-> 현재 코드에서 API URL은 일부 하드코딩(`http://localhost:8000`, `http://127.0.0.1:8000`) 되어 있습니다.  
-> 필요 시 `src/pages/*.jsx` 내부 URL 또는 프록시 설정으로 조정하세요.  
-> (RAG API는 기본 `http://localhost:9001/rag/ask`)
-
 ### 2) RAG 파이프라인 & API
 ```bash
 # 가상환경 권장
 python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scriptsctivate
+.\.venv\Scripts\Activate
 
 # 필수 패키지
 pip install -U pip
 pip install -r requirements.txt
-# 없으면 아래 예시로 설치
+# 없으면 아래로 설치
 # pip install fastapi uvicorn[standard] requests beautifulsoup4 tqdm numpy faiss-cpu sentence-transformers pydantic
 
 # 데이터 구축 (크롤링 → 정제 → 청크 → 임베딩/FAISS)
