@@ -75,48 +75,50 @@
 ---
 
 ## 📁 프로젝트 구조
+
+### 📂 CHAT (게시판 & 사용자 관리 웹앱)
 CHAT/
 ├── backend/
-│   ├── __pycache__/
-│   ├── routers/
-│   │   ├── __pycache__/
-│   │   ├── __init__.py
-│   │   ├── admin_users.py
-│   │   ├── chat.py
-│   │   ├── comments.py
-│   │   ├── post.py
-│   │   └── user.py
-│   ├── venv/
-│   ├── auth.py
-│   ├── crud.py
-│   ├── database.py
-│   ├── main.py
-│   ├── models.py
-│   └── schemas.py
+│ ├── pycache/
+│ ├── routers/
+│ │ ├── pycache/
+│ │ ├── init.py
+│ │ ├── admin_users.py
+│ │ ├── chat.py
+│ │ ├── comments.py
+│ │ ├── post.py
+│ │ └── user.py
+│ ├── venv/
+│ ├── auth.py
+│ ├── crud.py
+│ ├── database.py
+│ ├── main.py
+│ ├── models.py
+│ └── schemas.py
 │
 ├── frontend/
-│   ├── node_modules/
-│   ├── public/
-│   └── src/
-│       ├── components/
-│       │   ├── chat/
-│       │   ├── Footer.jsx
-│       │   └── Sidebar.jsx
-│       ├── pages/
-│       │   ├── admin/
-│       │   │   └── AdminUsersPage.jsx
-│       │   ├── ChatPage.jsx
-│       │   ├── LoginPage.jsx
-│       │   ├── MainPage.jsx
-│       │   ├── MyPage.jsx
-│       │   ├── PostDetailPage.jsx
-│       │   ├── PostEditPage.jsx
-│       │   ├── SignupPage.jsx
-│       │   └── WritePage.jsx
-│       ├── App.js
-│       ├── index.css
-│       ├── index.js
-│       └── Layout.jsx
+│ ├── node_modules/
+│ ├── public/
+│ └── src/
+│ ├── components/
+│ │ ├── chat/
+│ │ ├── Footer.jsx
+│ │ └── Sidebar.jsx
+│ ├── pages/
+│ │ ├── admin/
+│ │ │ └── AdminUsersPage.jsx
+│ │ ├── ChatPage.jsx
+│ │ ├── LoginPage.jsx
+│ │ ├── MainPage.jsx
+│ │ ├── MyPage.jsx
+│ │ ├── PostDetailPage.jsx
+│ │ ├── PostEditPage.jsx
+│ │ ├── SignupPage.jsx
+│ │ └── WritePage.jsx
+│ ├── App.js
+│ ├── index.css
+│ ├── index.js
+│ └── Layout.jsx
 │
 ├── reportWebVitals.js
 ├── setupTests.js
@@ -127,37 +129,39 @@ CHAT/
 ├── README.md
 ├── tailwind.config.js
 └── .env
+
+### 📂 CHATT (회사 정보 RAG 챗봇 서버)
 CHATT/
-├─ .venv/                         # 가상환경
-├─ crawler/                       # 원문 수집
-│  ├─ __init__.py
-│  └─ web_crawler.py
-├─ data/                          # 전처리 단계 산출물
-│  ├─ raw.jsonl                   # 크롤링 원문
-│  ├─ clean.jsonl                 # 클린 텍스트
-│  └─ chunks.jsonl                # 청크 결과
-├─ processor/                     # 전처리 파이프라인
-│  ├─ __init__.py
-│  ├─ cleaner.py                  # 노이즈 제거/정규화
-│  └─ chunker.py                  # 문서 청크 분할
-├─ embedder/                      # 임베딩 생성
-│  ├─ __init__.py
-│  └─ embed_faiss.py              # FAISS용 벡터 생성/저장
-├─ index/                         # 검색 인덱스 및 메타
-│  ├─ faiss_ip.index              # FAISS InnerProduct 인덱스
-│  ├─ metas.jsonl                 # 청크 메타데이터
-│  └─ texts.jsonl                 # 청크 원문 저장
-├─ rag/                           # RAG 검색/조회
-│  ├─ __init__.py
-│  └─ search.py                   # 쿼리→검색→리트리브 로직
-├─ utils/                         # 공용 유틸
-│  ├─ __init__.py
-│  ├─ file_utils.py               # 파일 I/O
-│  └─ text_utils.py               # 텍스트 헬퍼
-├─ config.py                      # 경로/모델/파라미터 설정
-├─ main.py                        # 파이프라인 엔트리/배치 스크립트
-├─ service.py                     # API 서버 엔트리
-└─ requirements.txt               # 의존성 목록
+├─ .venv/ # 가상환경
+├─ crawler/ # 원문 수집
+│ ├─ init.py
+│ └─ web_crawler.py
+├─ data/ # 전처리 단계 산출물
+│ ├─ raw.jsonl # 크롤링 원문
+│ ├─ clean.jsonl # 클린 텍스트
+│ └─ chunks.jsonl # 청크 결과
+├─ processor/ # 전처리 파이프라인
+│ ├─ init.py
+│ ├─ cleaner.py # 노이즈 제거/정규화
+│ └─ chunker.py # 문서 청크 분할
+├─ embedder/ # 임베딩 생성
+│ ├─ init.py
+│ └─ embed_faiss.py # FAISS용 벡터 생성/저장
+├─ index/ # 검색 인덱스 및 메타
+│ ├─ faiss_ip.index # FAISS InnerProduct 인덱스
+│ ├─ metas.jsonl # 청크 메타데이터
+│ └─ texts.jsonl # 청크 원문 저장
+├─ rag/ # RAG 검색/조회
+│ ├─ init.py
+│ └─ search.py # 쿼리→검색→리트리브 로직
+├─ utils/ # 공용 유틸
+│ ├─ init.py
+│ ├─ file_utils.py # 파일 I/O
+│ └─ text_utils.py # 텍스트 헬퍼
+├─ config.py # 경로/모델/파라미터 설정
+├─ main.py # 파이프라인 엔트리/배치 스크립트
+├─ service.py # API 서버 엔트리
+└─ requirements.txt # 의존성 목록
 
 ---
 
